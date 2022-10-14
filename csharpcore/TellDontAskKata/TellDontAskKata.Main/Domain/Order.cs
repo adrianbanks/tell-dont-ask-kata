@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using TellDontAskKata.Main.Service;
 using TellDontAskKata.Main.UseCase;
 
@@ -8,28 +9,23 @@ namespace TellDontAskKata.Main.Domain
     {
         private readonly List<OrderItem> _items = new();
 
-        public decimal Total { get; private set; }
-        public string Currency { get; }
-        public decimal Tax { get; private set; }
-        public OrderStatus Status { get; private set; }
         public int Id { get; }
+        public string Currency { get; }
+
+        public OrderStatus Status { get; private set; }
+        public decimal Total => Items.Sum(item => item.TaxedAmount);
+        public decimal Tax => Items.Sum(item => item.TaxAmount);
+
         public IEnumerable<OrderItem> Items => _items;
 
         public Order(int id)
         {
             Id = id;
-            Status = OrderStatus.Created;
             Currency = "EUR";
-            Total = 0m;
-            Tax = 0m;
+            Status = OrderStatus.Created;
         }
 
-        public void AddItem(OrderItem item)
-        {
-            _items.Add(item);
-            Total += item.TaxedAmount;
-            Tax += item.TaxAmount;
-        }
+        public void AddItem(OrderItem item) => _items.Add(item);
 
         public void Approve(OrderApprovalRequest request)
         {
