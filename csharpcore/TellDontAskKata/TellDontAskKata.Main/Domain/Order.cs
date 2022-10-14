@@ -50,7 +50,7 @@ namespace TellDontAskKata.Main.Domain
 
         public Order Ship(IShipmentService shipmentService)
         {
-            if (Status == OrderStatus.Created || Status == OrderStatus.Rejected)
+            if (Status is OrderStatus.Created or OrderStatus.Rejected)
             {
                 throw new OrderCannotBeShippedException();
             }
