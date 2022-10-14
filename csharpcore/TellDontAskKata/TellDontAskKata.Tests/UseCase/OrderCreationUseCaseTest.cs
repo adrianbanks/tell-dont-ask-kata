@@ -16,10 +16,7 @@ namespace TellDontAskKata.Tests.UseCase
 
         public OrderCreationUseCaseTest()
         {
-            var food = new Category { 
-                Name = "food",
-                TaxPercentage = 10m
-            };
+            var food = new Category("food", 10m);
 
             _productCatalog = new InMemoryProductCatalog(new List<Product>
             {
