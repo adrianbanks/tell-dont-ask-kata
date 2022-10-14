@@ -10,7 +10,6 @@ namespace TellDontAskKata.Main.Domain
         public int Id { get; }
         public string Currency { get; }
         public OrderStatus Status { get; }
-
         public IEnumerable<OrderItem> Items { get; }
 
         public decimal Total => Items.Sum(item => item.TaxedAmount);
