@@ -1,6 +1,6 @@
 ﻿namespace TellDontAskKata.Main.Domain
 {
-    public class OrderItem
+    public sealed class OrderItem
     {
         public Product Product { get; }
         public int Quantity { get; }
