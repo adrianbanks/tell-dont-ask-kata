@@ -13,15 +13,20 @@ namespace TellDontAskKata.Tests.UseCase
         private readonly TestOrderRepository _orderRepository;
         private readonly IProductCatalog _productCatalog;
         private readonly OrderCreationUseCase _useCase;
+        private Category _foodCategory;
+        private Product _saladProduct;
+        private Product _tomatoProduct;
 
         public OrderCreationUseCaseTest()
         {
-            var food = new Category("food", 10m);
+            _foodCategory = new Category("food", 10m);
+            _saladProduct = new Product("salad", 3.56m, _foodCategory);
+            _tomatoProduct = new Product("tomato", 4.65m, _foodCategory);
 
             _productCatalog = new InMemoryProductCatalog(new List<Product>
             {
-                new Product("salad", 3.56m, food),
-                new Product("tomato", 4.65m, food)
+                _saladProduct,
+                _tomatoProduct
             });
 
             _orderRepository = new TestOrderRepository();
@@ -58,21 +63,9 @@ namespace TellDontAskKata.Tests.UseCase
             Assert.Equal(2.13m, insertedOrder.Tax);
             Assert.Equal("EUR", insertedOrder.Currency);
 
-            Assert.Equal(2, insertedOrder.Items.Count);
-
-            var firstItem = insertedOrder.Items[0];
-            Assert.Equal("salad", firstItem.Product.Name);
-            Assert.Equal(3.56m, firstItem.Product.Price);
-            Assert.Equal(2, firstItem.Quantity);
-            Assert.Equal(7.84m, firstItem.TaxedAmount);
-            Assert.Equal(0.72m, firstItem.TaxAmount);
-
-            var secondItem = insertedOrder.Items[1];
-            Assert.Equal("tomato", secondItem.Product.Name);
-            Assert.Equal(4.65m, secondItem.Product.Price);
-            Assert.Equal(3, secondItem.Quantity);
-            Assert.Equal(15.36m, secondItem.TaxedAmount);
-            Assert.Equal(1.41m, secondItem.TaxAmount);
+            Assert.Collection(insertedOrder.Items,
+                item => Assert.Equal(new OrderItem(_saladProduct, 2), item),
+                item => Assert.Equal(new OrderItem(_tomatoProduct, 3), item));
         }
 
         [Fact]

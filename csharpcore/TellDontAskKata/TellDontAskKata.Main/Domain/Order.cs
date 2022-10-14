@@ -6,18 +6,19 @@ namespace TellDontAskKata.Main.Domain
 {
     public class Order
     {
+        private readonly List<OrderItem> _items = new();
+
         public decimal Total { get; private set; }
         public string Currency { get; }
-        public IList<OrderItem> Items { get; }
         public decimal Tax { get; private set; }
         public OrderStatus Status { get; private set; }
         public int Id { get; }
+        public IEnumerable<OrderItem> Items => _items;
 
         public Order(int id)
         {
             Id = id;
             Status = OrderStatus.Created;
-            Items = new List<OrderItem>();
             Currency = "EUR";
             Total = 0m;
             Tax = 0m;
@@ -25,7 +26,7 @@ namespace TellDontAskKata.Main.Domain
 
         public void AddItem(OrderItem item)
         {
-            Items.Add(item);
+            _items.Add(item);
             Total += item.TaxedAmount;
             Tax += item.TaxAmount;
         }
