@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using TellDontAskKata.Main.Domain;
+﻿using TellDontAskKata.Main.Domain;
 using TellDontAskKata.Main.Repository;
 
 namespace TellDontAskKata.Main.UseCase
@@ -21,7 +20,8 @@ namespace TellDontAskKata.Main.UseCase
         {
             var order = new Order();
 
-            foreach(var itemRequest in request.Requests){
+            foreach(var itemRequest in request.Requests)
+            {
                 var product = _productCatalog.GetByName(itemRequest.ProductName);
 
                 if (product == null)
@@ -36,10 +36,7 @@ namespace TellDontAskKata.Main.UseCase
                     var taxAmount = Round(unitaryTax * itemRequest.Quantity);
 
                     var orderItem = new OrderItem(product, itemRequest.Quantity, taxedAmount, taxAmount);
-
-                    order.Items.Add(orderItem);
-                    order.Total += taxedAmount;
-                    order.Tax += taxAmount;
+                    order.AddItem(orderItem);
                 }
             }
 
