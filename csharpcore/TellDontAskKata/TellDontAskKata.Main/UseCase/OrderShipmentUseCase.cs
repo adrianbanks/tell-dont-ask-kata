@@ -1,5 +1,4 @@
-﻿using TellDontAskKata.Main.Domain;
-using TellDontAskKata.Main.Repository;
+﻿using TellDontAskKata.Main.Repository;
 using TellDontAskKata.Main.Service;
 
 namespace TellDontAskKata.Main.UseCase
@@ -20,20 +19,7 @@ namespace TellDontAskKata.Main.UseCase
         public void Run(OrderShipmentRequest request)
         {
             var order = _orderRepository.GetById(request.OrderId);
-
-            if (order.Status == OrderStatus.Created || order.Status == OrderStatus.Rejected)
-            {
-                throw new OrderCannotBeShippedException();
-            }
-
-            if (order.Status == OrderStatus.Shipped)
-            {
-                throw new OrderCannotBeShippedTwiceException();
-            }
-
-            _shipmentService.Ship(order);
-
-            order.Status = OrderStatus.Shipped;
+            order.Ship(_shipmentService);
             _orderRepository.Save(order);
         }
     }
