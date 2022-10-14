@@ -1,4 +1,5 @@
-﻿using TellDontAskKata.Main.Domain;
+﻿using System.Collections.Generic;
+using TellDontAskKata.Main.Domain;
 using TellDontAskKata.Main.Repository;
 
 namespace TellDontAskKata.Main.UseCase
@@ -18,10 +19,9 @@ namespace TellDontAskKata.Main.UseCase
 
         public void Run(SellItemsRequest request)
         {
-            // TODO: where should this come from?
-            var order = new Order(1);
+            var items = new List<OrderItem>();
 
-            foreach(var itemRequest in request.Requests)
+            foreach (var itemRequest in request.Requests)
             {
                 var product = _productCatalog.GetByName(itemRequest.ProductName);
 
@@ -31,9 +31,11 @@ namespace TellDontAskKata.Main.UseCase
                 }
 
                 var orderItem = new OrderItem(product, itemRequest.Quantity);
-                order.AddItem(orderItem);
+                items.Add(orderItem);
             }
 
+            // TODO: where should this come from?
+            var order = new Order(1, items.ToArray());
             _orderRepository.Save(order);
         }
     }

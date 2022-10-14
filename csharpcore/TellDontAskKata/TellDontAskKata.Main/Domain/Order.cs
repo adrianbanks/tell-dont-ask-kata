@@ -7,25 +7,22 @@ namespace TellDontAskKata.Main.Domain
 {
     public class Order
     {
-        private readonly List<OrderItem> _items = new();
-
         public int Id { get; }
         public string Currency { get; }
-
         public OrderStatus Status { get; private set; }
+
+        public IEnumerable<OrderItem> Items { get; }
+
         public decimal Total => Items.Sum(item => item.TaxedAmount);
         public decimal Tax => Items.Sum(item => item.TaxAmount);
 
-        public IEnumerable<OrderItem> Items => _items;
-
-        public Order(int id)
+        public Order(int id, params OrderItem[] items)
         {
             Id = id;
             Currency = "EUR";
             Status = OrderStatus.Created;
+            Items = items;
         }
-
-        public void AddItem(OrderItem item) => _items.Add(item);
 
         public void Approve(OrderApprovalRequest request)
         {
