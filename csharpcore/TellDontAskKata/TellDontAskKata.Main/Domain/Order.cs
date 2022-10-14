@@ -48,7 +48,7 @@ namespace TellDontAskKata.Main.Domain
             return new Order(1, newStatus, Items.ToArray());
         }
 
-        public void Ship(IShipmentService shipmentService)
+        public Order Ship(IShipmentService shipmentService)
         {
             if (Status == OrderStatus.Created || Status == OrderStatus.Rejected)
             {
@@ -62,7 +62,7 @@ namespace TellDontAskKata.Main.Domain
 
             shipmentService.Ship(this);
 
-            Status = OrderStatus.Shipped;
+            return new Order(1, OrderStatus.Shipped, Items.ToArray());
         }
     }
 }

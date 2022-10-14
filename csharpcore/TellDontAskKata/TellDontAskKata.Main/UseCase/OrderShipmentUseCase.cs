@@ -19,7 +19,7 @@ namespace TellDontAskKata.Main.UseCase
         public void Run(OrderShipmentRequest request)
         {
             var order = _orderRepository.GetById(request.OrderId);
-            order.Ship(_shipmentService);
+            order = order.Ship(_shipmentService);
             _orderRepository.Save(order);
         }
     }

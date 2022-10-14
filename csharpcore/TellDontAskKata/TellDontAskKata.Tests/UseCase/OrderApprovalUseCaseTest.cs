@@ -96,8 +96,9 @@ namespace TellDontAskKata.Tests.UseCase
         [Fact]
         public void ShippedOrdersCannotBeRejected()
         {
-            var initialOrder = new Order(1).Approve(new OrderApprovalRequest { OrderId = 1, Approved = true });
-            initialOrder.Ship(new TestShipmentService());
+            var initialOrder = new Order(1)
+                .Approve(new OrderApprovalRequest { OrderId = 1, Approved = true })
+                .Ship(new TestShipmentService());
             _orderRepository.AddOrder(initialOrder);
 
             var request = new OrderApprovalRequest
