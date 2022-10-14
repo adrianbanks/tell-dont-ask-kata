@@ -16,15 +16,18 @@ namespace TellDontAskKata.Main.Domain
         public decimal Total => Items.Sum(item => item.TaxedAmount);
         public decimal Tax => Items.Sum(item => item.TaxAmount);
 
-        public Order(int id, params OrderItem[] items)
+        private Order(int id, OrderStatus status, params OrderItem[] items)
         {
             Id = id;
             Currency = "EUR";
-            Status = OrderStatus.Created;
+            Status = status;
             Items = items;
         }
 
-        public void Approve(OrderApprovalRequest request)
+        public Order(int id, params OrderItem[] items) : this(id, OrderStatus.Created, items)
+        { }
+
+        public Order Approve(OrderApprovalRequest request)
         {
             if (Status == OrderStatus.Shipped)
             {
@@ -41,7 +44,8 @@ namespace TellDontAskKata.Main.Domain
                 throw new ApprovedOrderCannotBeRejectedException();
             }
 
-            Status = request.Approved ? OrderStatus.Approved : OrderStatus.Rejected;
+            var newStatus = request.Approved ? OrderStatus.Approved : OrderStatus.Rejected;
+            return new Order(1, newStatus, Items.ToArray());
         }
 
         public void Ship(IShipmentService shipmentService)

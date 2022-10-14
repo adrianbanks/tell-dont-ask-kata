@@ -13,7 +13,7 @@ namespace TellDontAskKata.Main.UseCase
         public void Run(OrderApprovalRequest request)
         {
             var order = _orderRepository.GetById(request.OrderId);
-            order.Approve(request);
+            order = order.Approve(request);
             _orderRepository.Save(order);
         }
     }

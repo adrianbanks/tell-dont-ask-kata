@@ -58,8 +58,7 @@ namespace TellDontAskKata.Tests.UseCase
         [Fact]
         public void CannotApproveRejectedOrder()
         {
-            var initialOrder = new Order(1);
-            initialOrder.Approve(new OrderApprovalRequest { OrderId = 1, Approved = false });
+            var initialOrder = new Order(1).Approve(new OrderApprovalRequest { OrderId = 1, Approved = false });
             _orderRepository.AddOrder(initialOrder);
 
             var request = new OrderApprovalRequest
@@ -78,8 +77,7 @@ namespace TellDontAskKata.Tests.UseCase
         [Fact]
         public void CannotRejectApprovedOrder()
         {
-            var initialOrder = new Order(1);
-            initialOrder.Approve(new OrderApprovalRequest { OrderId = 1, Approved = true });
+            var initialOrder = new Order(1).Approve(new OrderApprovalRequest { OrderId = 1, Approved = true });
             _orderRepository.AddOrder(initialOrder);
 
             var request = new OrderApprovalRequest
@@ -98,8 +96,7 @@ namespace TellDontAskKata.Tests.UseCase
         [Fact]
         public void ShippedOrdersCannotBeRejected()
         {
-            var initialOrder = new Order(1);
-            initialOrder.Approve(new OrderApprovalRequest { OrderId = 1, Approved = true });
+            var initialOrder = new Order(1).Approve(new OrderApprovalRequest { OrderId = 1, Approved = true });
             initialOrder.Ship(new TestShipmentService());
             _orderRepository.AddOrder(initialOrder);
 
