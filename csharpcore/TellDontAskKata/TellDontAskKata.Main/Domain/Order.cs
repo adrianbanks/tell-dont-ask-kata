@@ -5,7 +5,7 @@ using TellDontAskKata.Main.UseCase;
 
 namespace TellDontAskKata.Main.Domain
 {
-    public class Order
+    public sealed class Order
     {
         public int Id { get; }
         public string Currency { get; }
