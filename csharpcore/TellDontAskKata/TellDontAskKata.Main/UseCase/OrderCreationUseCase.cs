@@ -19,14 +19,7 @@ namespace TellDontAskKata.Main.UseCase
 
         public void Run(SellItemsRequest request)
         {
-            var order = new Order
-            {
-                Status = OrderStatus.Created,
-                Items = new List<OrderItem>(),
-                Currency = "EUR",
-                Total = 0m,
-                Tax = 0m
-            };
+            var order = new Order();
 
             foreach(var itemRequest in request.Requests){
                 var product = _productCatalog.GetByName(itemRequest.ProductName);
