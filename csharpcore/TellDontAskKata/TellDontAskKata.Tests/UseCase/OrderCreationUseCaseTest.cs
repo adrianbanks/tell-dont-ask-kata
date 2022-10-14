@@ -65,14 +65,14 @@ namespace TellDontAskKata.Tests.UseCase
             Assert.Equal(3.56m, firstItem.Product.Price);
             Assert.Equal(2, firstItem.Quantity);
             Assert.Equal(7.84m, firstItem.TaxedAmount);
-            Assert.Equal(0.72m, firstItem.Tax);
+            Assert.Equal(0.72m, firstItem.TaxAmount);
 
             var secondItem = insertedOrder.Items[1];
             Assert.Equal("tomato", secondItem.Product.Name);
             Assert.Equal(4.65m, secondItem.Product.Price);
             Assert.Equal(3, secondItem.Quantity);
             Assert.Equal(15.36m, secondItem.TaxedAmount);
-            Assert.Equal(1.41m, secondItem.Tax);
+            Assert.Equal(1.41m, secondItem.TaxAmount);
         }
 
         [Fact]

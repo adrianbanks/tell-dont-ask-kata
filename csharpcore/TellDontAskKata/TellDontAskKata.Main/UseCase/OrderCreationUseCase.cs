@@ -29,24 +29,12 @@ namespace TellDontAskKata.Main.UseCase
                 {
                     throw new UnknownProductException();
                 }
-                else
-                {
-                    var unitaryTax = Round((product.Price / 100m) * product.Category.TaxPercentage);
-                    var unitaryTaxedAmount = Round(product.Price + unitaryTax);
-                    var taxedAmount = Round(unitaryTaxedAmount * itemRequest.Quantity);
-                    var taxAmount = Round(unitaryTax * itemRequest.Quantity);
 
-                    var orderItem = new OrderItem(product, itemRequest.Quantity, taxedAmount, taxAmount);
-                    order.AddItem(orderItem);
-                }
+                var orderItem = new OrderItem(product, itemRequest.Quantity);
+                order.AddItem(orderItem);
             }
 
             _orderRepository.Save(order);
-        }
-
-        private static decimal Round(decimal amount)
-        {
-            return decimal.Round(amount, 2, System.MidpointRounding.ToPositiveInfinity);
         }
     }
 }
