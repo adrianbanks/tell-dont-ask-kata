@@ -10,7 +10,7 @@ namespace TellDontAskKata.Main.Domain
         public string Currency { get; }
         public IList<OrderItem> Items { get; }
         public decimal Tax { get; private set; }
-        public OrderStatus Status { get; set; }
+        public OrderStatus Status { get; private set; }
         public int Id { get; }
 
         public Order(int id)
