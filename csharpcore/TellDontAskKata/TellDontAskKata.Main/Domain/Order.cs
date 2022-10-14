@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using TellDontAskKata.Main.UseCase;
 
 namespace TellDontAskKata.Main.Domain
 {
@@ -26,6 +27,26 @@ namespace TellDontAskKata.Main.Domain
             Items.Add(item);
             Total += item.TaxedAmount;
             Tax += item.Tax;
+        }
+
+        public void Approve(OrderApprovalRequest request)
+        {
+            if (Status == OrderStatus.Shipped)
+            {
+                throw new ShippedOrdersCannotBeChangedException();
+            }
+
+            if (request.Approved && Status == OrderStatus.Rejected)
+            {
+                throw new RejectedOrderCannotBeApprovedException();
+            }
+
+            if (!request.Approved && Status == OrderStatus.Approved)
+            {
+                throw new ApprovedOrderCannotBeRejectedException();
+            }
+
+            Status = request.Approved ? OrderStatus.Approved : OrderStatus.Rejected;
         }
     }
 }
